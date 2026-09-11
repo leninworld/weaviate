@@ -21,8 +21,8 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
+	localschema "github.com/weaviate/weaviate/cluster/schema/local"
 	"github.com/weaviate/weaviate/usecases/replica/hashtree"
-	schemaUC "github.com/weaviate/weaviate/usecases/schema"
 )
 
 type unloadedCheckpointFixture struct {
@@ -36,7 +36,7 @@ func newUnloadedCheckpointFixture(t *testing.T, className string, replicated boo
 	t.Helper()
 	f := newAddPropertyLazyFixture(t, className, singleShardState())
 	if replicated {
-		m, ok := f.index.schemaReader.(*schemaUC.MockSchemaReader)
+		m, ok := f.index.schemaReader.(*localschema.MockSchemaReader)
 		require.True(t, ok)
 		for _, c := range m.ExpectedCalls {
 			if c.Method == "ShardReplicas" {
